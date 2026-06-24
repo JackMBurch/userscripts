@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+
+# Saved WhatsApp page snapshots (local debugging only; can be large)
+whatsapp-hide-chat-list/whatsapp-page*/
+whatsapp-hide-chat-list/whatsapp-page-incorrect*/
