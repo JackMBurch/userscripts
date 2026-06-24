@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        WhatsApp Collapsible Sidebars
 // @namespace   JackMBurch
-// @version     1.1
+// @version     1.2
 // @grant       none
 // @license     GNU GPLv3
 // @author      JackMBurch
@@ -215,10 +215,12 @@
                 `.whc-chatlist{flex:0 0 0!important;width:0!important;` +
                 `max-width:0!important;min-width:0!important;padding:0!important;` +
                 `border:0!important;}`;
-            // Clip any descendant WhatsApp sets to overflow:visible so nothing
-            // bleeds out of the 0-width pane. Done purely in CSS — no per-node
-            // mutation.
-            css += `.whc-chatlist *{overflow:hidden!important;}`;
+            // Clip descendants WhatsApp sets to overflow:visible so nothing
+            // bleeds out of the 0-width pane. Scope to #side only — not
+            // #main / the conversation compose box (outside .whc-chatlist).
+            css +=
+                `.whc-chatlist #side,` +
+                `.whc-chatlist #side *{overflow:hidden!important;}`;
         }
 
         // DRAWER DIVIDERS: WhatsApp places two empty drawer holders
@@ -621,6 +623,17 @@
                    permanent red bar. */
                 #resize-handle:hover {
                     background-color: rgba(134, 150, 160, 0.6) !important;
+                }
+                /* Conversation compose: keep typed text the theme default
+                   (white in dark mode). Scoped to #main footer so the chat
+                   list search box keeps its own placeholder styling. */
+                #main div[data-lexical-editor="true"],
+                #main footer div[contenteditable="true"][role="textbox"] {
+                    color: var(--WDS-content-default) !important;
+                    caret-color: var(--WDS-content-default) !important;
+                }
+                #main span[data-lexical-text="true"] {
+                    color: inherit !important;
                 }
             `;
             document.head.appendChild(staticStyle);
